@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+	<html>
+<head>
+    <meta charset="utf-8">
+	<title>Demo FilterAble</title>
+	<style>
+		
+		#togglers {padding:0; margin:0;}
+		#togglers li {list-style-type:none;float:left;}
+		#togglers li a:link,
+		#togglers li a:visited,
+		#togglers li a:active,
+		#togglers li a:hover {display:block;padding:2px 6px;text-decoration:none;color:#666;}
+		
+		#togglers li a.active {background-color:#000;color:#fff}
+		
+		#content {clear:both;padding-top:20px;width:200px;}
+		#content h3 {margin:0;padding:0 0 10px;}
+		
+		#faq-page-container {float:right;}
+		#faq-page-container a {padding:0 3px;background:red;color:#fff;float:left;margin-right:2px;text-decoration:none;line-height:1.2;border:1px solid red;}
+		#faq-page-container a.active {background-color:#fff;color:red;}
+		
+	</style>
+</head>
+<body>
+	
+	<ul id="togglers">
+		<li><a href="#all" title="All colors">All</a></li>
+		<li><a href="#blue" title="Blue">Blue</a></li>
+		<li><a href="#red" title="Red">Red</a></li>
+		<li><a href="#yellow" title="Yellow">Yellow</a></li>
+	</ul>
+	
+	<div id="content">
+		<div data-category="blue">Blue</div>
+		<div data-category="red yellow">Red Yellow</div>
+		<div data-category="blue">Blue</div>
+		<div data-category="red">Red</div>
+		<div data-category="blue">Blue</div>
+		<div data-category="yellow">Yellow</div>
+		<div data-category="red">Red</div>
+		<div data-category="blue">Blue</div>
+		<div data-category="yellow">Yellow</div>
+		<div data-category="blue">Blue</div>
+		<div data-category="red">Red</div>
+		<div data-category="yellow">Yellow</div>
+		<div data-category="blue yellow">Blue Yellow</div>
+	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="jquery.filterItems.js"></script>
+	<script>
+		(function(){
+			$('#content').filterItems('#togglers a', {})
+		})();
+	</script>
+</body>
+</html>

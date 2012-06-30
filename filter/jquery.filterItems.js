@@ -9,18 +9,20 @@
 	 * 
 	 * @author Tom Marulak
 	 * @created 25/06/2012
-	 * @version 0.1
+	 * @version 0.2
 	 */
 
 	var FilterItems = function(parent, elms, options){
 	
 		this.settings = $.extend({
 			attribute : 'data-category', 				// this attribute will be the item, toggler anchor value will match this value
+			toggleClass : 'active',
 			pagination : true,  						// if false, no paging will be created
 			limit : 5,									// maximum number of item in 1 page
 			pageContainerId : '#faq-page-container',
 			pageBtnClass : 'faq-paging',
 			faqHeadingId : 'faq-heading',
+			faqHeadingTag : 'h3',
 			itemIndex : 0								// default index of toggler
 		}, options);
 		
@@ -43,10 +45,9 @@
 			
 		clickHandler : function(event){
 			var str = $(event.target).attr('href').slice(1);
-	
-			//TODO : make this more dynamic. no ul hardcoded, class name hardcoded
-			$(event.target).parents('ul').find('a').removeClass('active');
-			$(event.target).addClass('active')
+			
+			$(this.togglers).removeClass(this.settings.toggleClass);
+			$(event.target).addClass(this.settings.toggleClass)
 			
 			this.index = this.togglers.index(event.target);
 			this.pageIndex = 0;
@@ -57,7 +58,7 @@
 		},
 		
 		/**
-		 * 
+		 * Filter all items
 		 */
 		doFilter : function(string){
 	
@@ -92,13 +93,13 @@
 			if($heading.length){
 				$heading.text(headingText);
 			} else {
-				var $heading = $(document.createElement('h3')).text(headingText).attr('id', this.settings.faqHeadingId);
+				var $heading = $(document.createElement(this.settings.faqHeadingTag)).text(headingText).attr('id', this.settings.faqHeadingId);
 				$(this.parentContent).prepend($heading);
 			}
 		},
 		
 		/**
-		 * 
+		 * Create pagination if settings.pagination is true
 		 */
 		createPagination : function(){
 			var a = document.createElement('a'),
@@ -106,9 +107,10 @@
 				$container = $(document.createElement('div')).attr('id', this.settings.pageContainerId.substring(1)),
 				$pageContainer = $(this.settings.pageContainerId),
 				active,
+				pageCount = Math.ceil(this.itemsInCurrentCategory.length / this.settings.limit),
 				i;
 	
-			for(i = 0; i < (this.itemsInCurrentCategory.length % this.settings.limit + 1); i++){
+			for(i = 0; i < pageCount; i++){
 				active = i == 0 ? ' active' : '';
 				list.push('<a href="#" data-paging-index= "' + i + '" class="' + this.settings.pageBtnClass + active + '">'+ (i+1) +'</a>');
 			}
