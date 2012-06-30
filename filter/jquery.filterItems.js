@@ -23,7 +23,9 @@
 			pageBtnClass : 'faq-paging',
 			faqHeadingId : 'faq-heading',
 			faqHeadingTag : 'h3',
-			itemIndex : 0								// default index of toggler
+			itemIndex : 0,								// default index of toggler
+			toggleOnItems : this._toggleOnItems,
+			toggleOffItems : this._toggleOffItems
 		}, options);
 		
 		this.parentContent = parent;
@@ -42,7 +44,7 @@
 	}
 	
 	FilterItems.prototype = {
-			
+					
 		clickHandler : function(event){
 			var str = $(event.target).attr('href').slice(1);
 			
@@ -134,9 +136,9 @@
 		showVisibleItems : function(){
 			var length = this.itemsInCurrentCategory.length,
 				visibleItems = this.itemsInCurrentCategory.slice(this.pageIndex * this.settings.limit, this.pageIndex * this.settings.limit + 5);
-	
-			$(this.itemsInCurrentCategory).hide();
-			$(visibleItems).fadeIn('fast');
+				
+			this.settings.toggleOffItems.call(this, this.itemsInCurrentCategory);
+			this.settings.toggleOnItems.call(this, visibleItems);
 			
 			return this;
 		},
@@ -155,6 +157,8 @@
 		 * @return Object
 		 */
 		attachPageToggler : function(event){
+			if($(event.target).attr('data-paging-index') == this.pageIndex) return false;
+			
 			this.pageIndex = $(event.target).attr('data-paging-index');
 			$('.'+this.settings.pageBtnClass).removeClass('active');
 			$(event.target).addClass('active');
@@ -182,6 +186,15 @@
 			
 			return keywords;
 		},
+		
+		_toggleOnItems : function(items){
+			$(items).fadeIn('fast')
+		},
+		
+		_toggleOffItems : function(items){
+			$(items).hide();
+		}
+		
 	}
 	/**
 	 * Reset constructor 
